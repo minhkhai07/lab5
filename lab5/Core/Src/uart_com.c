@@ -6,8 +6,8 @@
  */
 #include "uart_com.h"
 
-uint8_t sucess_message[] = "Transmit success, next transmit\r\n";
-uint8_t fault_message[] = "Fault resend, stop send\r\n";
+uint8_t sucess_message[] = "Transmited, next transmit\r\n";
+uint8_t fault_message[] = "Not respone \r\n";
 
 uint8_t start = 0;
 uint8_t end = 0;
@@ -15,7 +15,7 @@ uint8_t state = idel;
 uint8_t len, length, leng;
 
 void uart_com_fsm(void){
-	switch(state){
+switch(state){
 	case idel:
 		if(flag_cmd){
 			start = id_start;
@@ -40,8 +40,9 @@ void uart_com_fsm(void){
 		break;
 	case send:
 		ADC_value = HAL_ADC_GetValue (&hadc1);
-		HAL_UART_Transmit(&huart2,(void *)str,sprintf(str, "ADC Read is %lu\r\n", ADC_value), 1000);
-		setTimer(0, 3000);
+		HAL_UART_Transmit(&huart2,(void *)str,sprintf(str, "ADC is %lu\r\n", ADC_value), 1000);
+		setTimer(0,3000);
+		activeTimer(0);
 		state = wait_ack;
 		break;
 	case wait_ack:
@@ -60,7 +61,7 @@ void uart_com_fsm(void){
 			}
 		}
 		if(Timer_Flag[0]){
-			HAL_UART_Transmit(&huart2, (void *)str, sprintf(str, "Resend %lu\r\n", ADC_value), 1000);
+			HAL_UART_Transmit(&huart2, (void *)str, sprintf(str, "Resend ADC is %lu\r\n", ADC_value), 1000);
 			setTimer(0,3000);
 			setTimer(1,6000);
 			activeTimer(1);
@@ -69,12 +70,12 @@ void uart_com_fsm(void){
 		break;
 	case resend:
 		if(Timer_Flag[0]){
-			HAL_UART_Transmit(&huart2, (void *)str, sprintf(str, "Resend %lu\r\n", ADC_value), 1000);
+			HAL_UART_Transmit(&huart2, (void *)str, sprintf(str, "Resend ADC is %lu\r\n", ADC_value), 1000);
 			setTimer(0,3000);
 		}
 
 		if(flag_cmd){
-			//HAL_UART_Transmit(&huart2, sucess_message, sizeof(sucess_message), 1000);
+			HAL_UART_Transmit(&huart2, sucess_message, sizeof(sucess_message), 1000);
 			start = id_start;
 			end = (id_buffer - 1 + MAX_BUFFER_SIZE) % MAX_BUFFER_SIZE;
 			flag_cmd = 0;
@@ -89,7 +90,7 @@ void uart_com_fsm(void){
 			}
 		}
 
-		if(Timer_Flag[1]){
+		else if(Timer_Flag[1]){
 			ignoreTimer(0);
 			ignoreTimer(1);
 			state = fault;

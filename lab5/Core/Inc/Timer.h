@@ -13,7 +13,7 @@ extern int TIMER_CYCLE;
 
 extern int Timer_Counter[MAX_TIMER];
 extern int Timer_Flag[MAX_TIMER];
-
+void init(void);
 void setTimer(int index, int duration);
 void ignoreTimer(int index);
 void activeTimer(int index);

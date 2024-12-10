@@ -6,7 +6,7 @@
  */
 #include "Global.h"
 
-uint8_t MAX_BUFFER_SIZE = 10;
+uint8_t MAX_BUFFER_SIZE = 30;
 
 char str[50];
 uint8_t tmp = 0;
