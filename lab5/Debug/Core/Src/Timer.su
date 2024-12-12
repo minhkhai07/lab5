@@ -1,5 +1,2 @@
-Timer.c:16:6:init	16	static
-Timer.c:25:6:setTimer	16	static
-Timer.c:29:6:ignoreTimer	16	static
-Timer.c:33:6:activeTimer	16	static
-Timer.c:37:6:runTimer	16	static
+Timer.c:16:6:setTimer	16	static
+Timer.c:20:6:runTimer	16	static

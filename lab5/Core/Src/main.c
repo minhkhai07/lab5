@@ -119,7 +119,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   	HAL_ADC_Start(&hadc1);
     HAL_TIM_Base_Start_IT(&htim2);
-    HAL_UART_Receive_IT(&huart2, &tmp, 1);
+    HAL_UART_Receive_IT(&huart2, &tmp, 1); //coi
   while (1)
   {
 //	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
